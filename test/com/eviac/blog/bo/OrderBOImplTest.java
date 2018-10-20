@@ -78,7 +78,7 @@ public class OrderBOImplTest {
 	 * positive scenario. test cancelOrder method should cancel an order.
 	 * 
 	 * @throws SQLException
-	 * @throws BOException
+	 * @throws BOException  custom exception
 	 */
 	@Test
 	public void cancelOrder_should_cancel_order() throws SQLException, BOException {
@@ -88,6 +88,24 @@ public class OrderBOImplTest {
 		boolean result = bo.cancelOrder(123);
 
 		assertTrue(result);
+		verify(dao).read(123);
+		verify(dao).update(order);
+	}
+
+	/**
+	 * negative scenario. test cancelOrder method should not cancel an order.
+	 * 
+	 * @throws SQLException
+	 * @throws BOException  custom exception
+	 */
+	@Test
+	public void cancelOrder_should_not_cancel_order() throws SQLException, BOException {
+		when(dao.read(123)).thenReturn(order);
+		when(dao.update(order)).thenReturn(0);
+
+		boolean result = bo.cancelOrder(123);
+
+		assertFalse(result);
 		verify(dao).read(123);
 		verify(dao).update(order);
 	}
