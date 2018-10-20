@@ -138,4 +138,46 @@ public class OrderBOImplTest {
 
 	}
 
+	/**
+	 * positive scenario. test deleteOrder method should delete and order.
+	 * 
+	 * @throws SQLException
+	 * @throws BOException  custom exception
+	 */
+	@Test
+	public void deleteOrder_should_delete_an_order() throws SQLException, BOException {
+		when(dao.delete(123)).thenReturn(1);
+
+		boolean result = bo.deleteOrder(123);
+		assertTrue(result);
+		verify(dao).delete(123);
+	}
+
+	/**
+	 * negative scenario. test deleteOrder method should not delete and order.
+	 * 
+	 * @throws SQLException
+	 * @throws BOException  custom exception
+	 */
+	@Test
+	public void deleteOrder_should_not_delete_an_order() throws SQLException, BOException {
+		when(dao.delete(123)).thenReturn(0);
+
+		boolean result = bo.deleteOrder(123);
+		assertFalse(result);
+		verify(dao).delete(123);
+	}
+
+	/**
+	 * exception scenario. test deleteOrder method should throw BOException.
+	 * 
+	 * @throws SQLException
+	 * @throws BOException  custom exception
+	 */
+	@Test(expected = BOException.class)
+	public void deleteOrder_should_throw_BOException() throws SQLException, BOException {
+		when(dao.delete(123)).thenThrow(SQLException.class);
+		bo.deleteOrder(123);
+	}
+
 }
