@@ -19,30 +19,59 @@ public class OrderBOImplTest {
 
 	@Mock
 	private OrderDAO dao;
+	private OrderBOImpl bo;
+	private Order order;
 
 	@Before
 	public void setup() {
 		MockitoAnnotations.initMocks(this);
+		bo = new OrderBOImpl();
+		bo.setOrderDao(dao);
+		order = new Order();
 	}
 
 	/**
-	 * test placeOrder method should create an order
+	 * positive scenario. test placeOrder method should create an order.
 	 * 
 	 * @throws SQLException
-	 * @throws BOException
+	 * @throws BOException  custom exception
 	 */
 	@Test
 	public void placeOrder_should_create_an_order() throws SQLException, BOException {
-		OrderBOImpl bo = new OrderBOImpl();
-		bo.setOrderDao(dao);
-
-		Order order = new Order();
 		when(dao.create(order)).thenReturn(1);
 
 		boolean result = bo.placeOrder(order);
 
 		assertTrue(result);
 		verify(dao).create(order);
+	}
+
+	/**
+	 * negative scenario. test placeOrder method should not create an order.
+	 * 
+	 * @throws SQLException
+	 * @throws BOException  custom exception
+	 */
+	@Test
+	public void placeOrder_should_not_create_an_order() throws SQLException, BOException {
+		when(dao.create(order)).thenReturn(0);
+
+		boolean result = bo.placeOrder(order);
+
+		assertFalse(result);
+		verify(dao).create(order);
+	}
+
+	/**
+	 * exception scenario. test placeOrder method should throw an exception.
+	 * 
+	 * @throws SQLException
+	 * @throws BOException  custom exception
+	 */
+	@Test(expected = BOException.class)
+	public void placeOrder_should_throw_BOException() throws SQLException, BOException {
+		when(dao.create(order)).thenThrow(SQLException.class);
+		bo.placeOrder(order);
 	}
 
 }
