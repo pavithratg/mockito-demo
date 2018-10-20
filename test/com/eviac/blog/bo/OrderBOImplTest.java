@@ -74,4 +74,22 @@ public class OrderBOImplTest {
 		bo.placeOrder(order);
 	}
 
+	/**
+	 * positive scenario. test cancelOrder method should cancel an order.
+	 * 
+	 * @throws SQLException
+	 * @throws BOException
+	 */
+	@Test
+	public void cancelOrder_should_cancel_order() throws SQLException, BOException {
+		when(dao.read(123)).thenReturn(order);
+		when(dao.update(order)).thenReturn(1);
+
+		boolean result = bo.cancelOrder(123);
+
+		assertTrue(result);
+		verify(dao).read(123);
+		verify(dao).update(order);
+	}
+
 }
