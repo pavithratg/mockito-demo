@@ -110,4 +110,32 @@ public class OrderBOImplTest {
 		verify(dao).update(order);
 	}
 
+	/**
+	 * exception scenario. test cancelOrder method should throw a BOException upon
+	 * read.
+	 * 
+	 * @throws BOException
+	 * @throws SQLException custom exception
+	 */
+	@Test(expected = BOException.class)
+	public void cancelOrder_should__throw_BOException_on_read() throws BOException, SQLException {
+		when(dao.read(123)).thenThrow(SQLException.class);
+		bo.cancelOrder(123);
+	}
+
+	/**
+	 * exception scenario. test cancelOrder method should throw a BOExceptionupon
+	 * update.
+	 * 
+	 * @throws SQLException
+	 * @throws BOException  custom exception
+	 */
+	@Test(expected = BOException.class)
+	public void cancelOrder_should_throw_BOException_on_update() throws SQLException, BOException {
+		when(dao.read(123)).thenReturn(order);
+		when(dao.update(order)).thenThrow(SQLException.class);
+		bo.cancelOrder(123);
+
+	}
+
 }
