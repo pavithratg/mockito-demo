@@ -38,4 +38,9 @@ public interface OrderDAO {
 	 */
 	int delete(int id) throws SQLException;
 
+	/**
+	 * this method is added to demonstrate testing void methods using Mockito.
+	 */
+	void voidMethod() throws Exception;
+
 }

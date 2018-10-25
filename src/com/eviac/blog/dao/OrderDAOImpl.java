@@ -26,4 +26,10 @@ public class OrderDAOImpl implements OrderDAO {
 		return 0;
 	}
 
+	@Override
+	public void voidMethod() {
+		// do nothing
+		
+	}
+
 }

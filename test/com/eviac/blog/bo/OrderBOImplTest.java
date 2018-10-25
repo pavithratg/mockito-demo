@@ -39,7 +39,8 @@ public class OrderBOImplTest {
 	 */
 	@Test
 	public void placeOrder_should_create_an_order() throws SQLException, BOException {
-		when(dao.create(order)).thenReturn(1);
+		// upon passing any Order instance return 1
+		when(dao.create(any(Order.class))).thenReturn(1);
 
 		boolean result = bo.placeOrder(order);
 
@@ -120,7 +121,8 @@ public class OrderBOImplTest {
 	 */
 	@Test(expected = BOException.class)
 	public void cancelOrder_should__throw_BOException_on_read() throws BOException, SQLException {
-		when(dao.read(ORDER_ID)).thenThrow(SQLException.class);
+		// upon passing any int to the method returns a sql exception.
+		when(dao.read(anyInt())).thenThrow(SQLException.class);
 		bo.cancelOrder(ORDER_ID);
 	}
 
@@ -152,6 +154,12 @@ public class OrderBOImplTest {
 		boolean result = bo.deleteOrder(ORDER_ID);
 		assertTrue(result);
 		verify(dao).delete(ORDER_ID);
+
+		// verifies that the delete method has been called only once.
+		verify(dao, times(1)).delete(ORDER_ID);
+
+		// verifies that the delete method has been called atleast once.
+		verify(dao, atLeast(1)).delete(ORDER_ID);
 	}
 
 	/**
@@ -180,5 +188,7 @@ public class OrderBOImplTest {
 		when(dao.delete(ORDER_ID)).thenThrow(SQLException.class);
 		bo.deleteOrder(ORDER_ID);
 	}
+	
+	
 
 }

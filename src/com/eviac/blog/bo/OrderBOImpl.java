@@ -72,4 +72,15 @@ public class OrderBOImpl implements OrderBO {
 		this.orderDao = orderDao;
 	}
 
+	@Override
+	public int useVoidMethod() {
+		try {
+			this.orderDao.voidMethod();
+		} catch (Exception e) {
+			throw new RuntimeException();
+		}
+
+		return 1;
+	}
+
 }

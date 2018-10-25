@@ -26,4 +26,11 @@ public interface OrderBO {
 	 */
 	boolean deleteOrder(int id) throws BOException;
 
+	/**
+	 * This method is added to demonstrate testing void method using Mockito.
+	 * 
+	 * @return
+	 */
+	int useVoidMethod();
+
 }
