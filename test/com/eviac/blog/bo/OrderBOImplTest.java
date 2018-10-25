@@ -212,13 +212,13 @@ public class OrderBOImplTest {
 		doThrow(Exception.class).when(dao).voidMethod();
 		bo.useVoidMethod();
 	}
-	
+
 	/**
 	 * test consecutive method calls.
 	 * 
 	 * @throws Exception
 	 */
-	@Test(expected=RuntimeException.class)
+	@Test(expected = RuntimeException.class)
 	public void testConsecutiveCalls() throws Exception {
 		doNothing().doThrow(Exception.class).when(dao).voidMethod();
 		bo.useVoidMethod();
