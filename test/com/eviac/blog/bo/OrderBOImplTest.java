@@ -188,7 +188,42 @@ public class OrderBOImplTest {
 		when(dao.delete(ORDER_ID)).thenThrow(SQLException.class);
 		bo.deleteOrder(ORDER_ID);
 	}
+
+	/**
+	 * test and verify useVoidMethod calls voidMethod.
+	 * 
+	 * @throws Exception
+	 */
+	@Test
+	public void useVoidMethodShouldCallVoidMethod() throws Exception {
+		doNothing().when(dao).voidMethod();
+		assertEquals(1, bo.useVoidMethod());
+		verify(dao).voidMethod();
+	}
+
+	/**
+	 * test useVoidMethod throws RuntimeException, upon voidMethod throws Exception.
+	 * 
+	 * @throws Exception
+	 * 
+	 */
+	@Test(expected = RuntimeException.class)
+	public void useVoidMethodShouldThrowRunTimeException() throws Exception {
+		doThrow(Exception.class).when(dao).voidMethod();
+		bo.useVoidMethod();
+	}
 	
-	
+	/**
+	 * test consecutive method calls.
+	 * 
+	 * @throws Exception
+	 */
+	@Test(expected=RuntimeException.class)
+	public void testConsecutiveCalls() throws Exception {
+		doNothing().doThrow(Exception.class).when(dao).voidMethod();
+		bo.useVoidMethod();
+		verify(dao).voidMethod();
+		bo.useVoidMethod();
+	}
 
 }
